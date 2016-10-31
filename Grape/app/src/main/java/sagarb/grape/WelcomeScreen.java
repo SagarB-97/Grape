@@ -32,6 +32,7 @@ public class WelcomeScreen extends AppCompatActivity {
 
 
 	//Ask for Dynamic Permission for Android OS>=6.0 because of changes Android Permission Policies
+	//Complete this ASAP
     }
     public void proc(View v)
     {
