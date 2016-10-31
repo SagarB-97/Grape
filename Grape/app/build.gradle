@@ -1,3 +1,6 @@
+//Please add selected dependencies from Google Services
+//The build time is unnecessarily increasing
+
 apply plugin: 'com.android.application'
 
 android {
