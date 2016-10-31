@@ -1,3 +1,6 @@
+//Instead of a new Activity
+//A Preloader can be used
+
 package sagarb.grape;
 
 import android.content.Intent;
