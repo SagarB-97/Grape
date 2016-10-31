@@ -2,14 +2,9 @@ package sagarb.grape;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -27,7 +22,9 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-public class MainActivity extends AppCompatActivity {
+import sagarb.grape.AppPermissionChecker.PermissionRequestCallBack;
+
+public class MainActivity extends BaseActivity {
 
   public static final int CAMERA_REQUEST_CODE = 1;
   private SurfaceView camView;
@@ -46,28 +43,17 @@ public class MainActivity extends AppCompatActivity {
     barcodeDetector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.QR_CODE).build();
 
     cameraSource = new CameraSource.Builder(this, barcodeDetector).setRequestedPreviewSize(640,480).build();
-    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+    appPermissionChecker.handlePermission(Manifest.permission.CAMERA, CAMERA_REQUEST_CODE, new PermissionRequestCallBack() {
+      @Override
+      public void permissionGranted() {
+        initializeCamView(barcodeDetector);
       }
-    } else {
-      initializeCamView(barcodeDetector);
-    }
-  }
 
-
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    switch (requestCode) {
-      case CAMERA_REQUEST_CODE: {
-        if (grantResults.length > 0
-            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          initializeCamView(barcodeDetector);
-        } else {
-          finish();
-        }
+      @Override
+      public void permissionDenied() {
+        finish();
       }
-    }
+    });
   }
 
   private void initializeCamView(final BarcodeDetector barcodeDetector) {
