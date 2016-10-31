@@ -1,6 +1,5 @@
 package sagarb.grape;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -22,7 +21,7 @@ public class AppPermissionChecker {
     this.callBack = callBack;
     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, permissionRequestCode);
+        ActivityCompat.requestPermissions(activity, new String[]{permission}, permissionRequestCode);
       } else {
         callBack.permissionGranted();
       }
