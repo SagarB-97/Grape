@@ -29,6 +29,9 @@ public class WelcomeScreen extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
+
+
+	//Ask for Dynamic Permission for Android OS>=6.0 because of changes Android Permission Policies
     }
     public void proc(View v)
     {
